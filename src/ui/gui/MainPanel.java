@@ -6,7 +6,6 @@ import javax.swing.*;
 import java.awt.*;
 
 public class MainPanel extends JPanel {
-
     private CardPanel cardPanel;
 
     // constructor
@@ -16,6 +15,7 @@ public class MainPanel extends JPanel {
         add(cardPanel);
     }
 
+    // TODO 1 open pickpanel from this and allow picking of cardPacks which will be opened with mainpanel
     // Create JFrame and instantiate JPanel and components
     public static void createAndShowGui(CardPack cardPack) {
         MainPanel mainPanel = new MainPanel(cardPack);

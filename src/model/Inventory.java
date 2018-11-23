@@ -1,29 +1,36 @@
 package model;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import static model.ObjectFileStore.storeObject;
+import static model.ObjectFileStore.readObjects;
 
 public class Inventory {
-    public ArrayList<CardPack> inventory;
+    public ArrayList<CardPack> storage;
 
     public Inventory() {
-        this.inventory = null;
+        this.storage = new ArrayList<>();
     }
 
-    public void addCardPack(String name) {
-        inventory.add(new CardPack(name));
-    }
-
-    public void saveCardPacks() {
-        for (CardPack cp : inventory) {
-            storeObject(cp, cp.getName());
+    public void saveCardPacks(String dir) {
+        for (CardPack cp : storage) {
+            storeObject(cp, cp.getName(), dir);
         }
     }
 
-    // TODO find method to read all files in one dir
-    public void readCardPacks() {
+    public void readCardPacks(String dir) {
+        File path = new File(dir);
+        File[] fileList = path.listFiles();
 
+        if (fileList != null) {
+            for (File f : fileList) {
+                if (!f.isDirectory()) {
+                    CardPack cp = readObjects(f);
+                    this.storage.add(cp);
+                }
+            }
+        }
     }
 
 }

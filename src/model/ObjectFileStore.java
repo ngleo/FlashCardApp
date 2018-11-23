@@ -3,12 +3,12 @@ package model;
 import java.io.*;
 
 public class ObjectFileStore {
-    public static void storeObject(CardPack cardPack, String name){
+    public static void storeObject(CardPack cardPack, String name, String dir){
 
         OutputStream ops = null;
         ObjectOutputStream objOps = null;
         try {
-            ops = new FileOutputStream("data/" + name);
+            ops = new FileOutputStream(dir + name + ".txt");
             objOps = new ObjectOutputStream(ops);
             objOps.writeObject(cardPack);
             objOps.flush();
@@ -26,15 +26,14 @@ public class ObjectFileStore {
 
     }
 
-    public static CardPack readObjects(){
+    public static CardPack readObjects(File name){
 
         InputStream fileIs = null;
         ObjectInputStream objIs = null;
         try {
-            fileIs = new FileInputStream("data/DataFile.txt");
+            fileIs = new FileInputStream(name);
             objIs = new ObjectInputStream(fileIs);
-            CardPack cardPack = (CardPack) objIs.readObject();
-            return cardPack;
+            return (CardPack) objIs.readObject();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {

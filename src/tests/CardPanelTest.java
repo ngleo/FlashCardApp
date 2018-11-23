@@ -31,15 +31,13 @@ public class CardPanelTest {
 
     @Test
     public void testDisplaySetup() {
-        assertEquals("start", cardPanel.getWordDisplay().getText());
+        assertEquals("Start Flashcards", cardPanel.getWordDisplay().getText());
     }
 
     @Test
     public void testNext() {
 
     }
-
-    // TODO EXTRACT BUTTON FUNCTIONS OUT TO TEST THEM
     @Test
     public void testFirstFlip() {
 

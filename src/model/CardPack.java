@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 public class CardPack implements Serializable {
+    private static final long serialVersionUID = -4935823706970464535L;
+
     private String name;
     public ArrayList<Card> cards;
 

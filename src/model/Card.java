@@ -3,6 +3,7 @@ package model;
 import java.io.Serializable;
 
 public class Card implements Serializable {
+    private static final long serialVersionUID = 8585555395808288264L;
 
     public String front;
     public String back;
@@ -13,20 +14,5 @@ public class Card implements Serializable {
         this.front = front;
         this.back = back;
         this.isFlipped = false;
-    }
-
-
-    // getters
-    public String getFront() { return this.front; }
-
-    public String getBack() { return this.back; }
-
-    // setters
-    public void setFront(String front) {
-        this.front = front;
-    }
-
-    public void setBack(String back) {
-        this.back = back;
     }
 }

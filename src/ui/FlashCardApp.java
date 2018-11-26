@@ -1,23 +1,23 @@
 package ui;
 
-import ui.gui.SelectPanel;
+import ui.gui.SelectCardPackPanel;
 
 import javax.swing.*;
 import java.awt.*;
 
 public class FlashCardApp extends JFrame {
 
-    private SelectPanel selectPanel;
+    private SelectCardPackPanel selectCardPackPanel;
 
     public FlashCardApp() {
         super("Flashcard App");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
-        selectPanel = new SelectPanel();
-        getContentPane().add(selectPanel);
+        selectCardPackPanel = new SelectCardPackPanel();
+        getContentPane().add(selectCardPackPanel);
 
         // init size and location
-        setPreferredSize(new Dimension(500, 380));
+        setPreferredSize(new Dimension(500, 410));
         pack();
         setLocationRelativeTo(null);
         setVisible(true);
@@ -30,10 +30,6 @@ public class FlashCardApp extends JFrame {
         validate();
         pack();
     }
-
-
-
-
 
     public static void main(String[] args) {
         new FlashCardApp();
@@ -84,14 +80,5 @@ public class FlashCardApp extends JFrame {
 //        ObjectFileStore.storeObject(cp1, "Days", "data/");
 
 //        CardPack cp1 = inv1.storage.get(0);
-
-
-//        // TODO take argument away, add argument in CardPanel
-//        SwingUtilities.invokeLater(new Runnable() {
-//            public void run() {
-//                createAndShowGui();
-//            }
-//        });
-
     }
 }

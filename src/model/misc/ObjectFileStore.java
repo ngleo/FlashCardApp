@@ -1,4 +1,6 @@
-package model;
+package model.misc;
+
+import model.CardPack;
 
 import java.io.*;
 

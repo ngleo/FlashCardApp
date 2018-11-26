@@ -1,5 +1,7 @@
 package model;
 
+import model.misc.ObjectFileStore;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -17,10 +19,10 @@ public class CardPack implements Serializable {
 
     // getters
     public String getName() {
-        return name;
+        return this.name;
     }
 
-    public int getSize() { return cards.size();}
+    public int getSize() { return this.cards.size();}
 
     // setters
     public void setName(String name) {
@@ -31,5 +33,10 @@ public class CardPack implements Serializable {
         this.cards.add(card);
     }
 
+    // MODIFIES: Data files
+    // EFFECTS: Save card pack to file
+    public void saveCardPack() {
+        ObjectFileStore.storeObject(this, this.getName(), "data/");
+    }
 
 }

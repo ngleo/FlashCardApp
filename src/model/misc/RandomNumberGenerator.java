@@ -1,4 +1,4 @@
-package model;
+package model.misc;
 
 import java.util.Random;
 
@@ -12,6 +12,6 @@ public class RandomNumberGenerator {
     }
 
     public int getRand() {
-        return rand.nextInt(this.max);
+        return rand.nextInt(max);
     }
 }

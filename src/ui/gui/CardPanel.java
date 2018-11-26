@@ -2,7 +2,7 @@ package ui.gui;
 
 import model.Card;
 import model.CardPack;
-import model.RandomNumberGenerator;
+import model.misc.RandomNumberGenerator;
 import ui.FlashCardApp;
 
 import javax.swing.*;
@@ -13,6 +13,7 @@ import java.awt.event.ActionListener;
 import static java.awt.Font.PLAIN;
 
 public class CardPanel extends JPanel{
+    private JLabel title;
     private CardPack cardPack;
     private Card card;
     private JLabel wordDisplay;
@@ -22,7 +23,8 @@ public class CardPanel extends JPanel{
         this.cardPack = cardPack;
         this.card = null;
 
-        createJLabel();
+        createTitleLabel();
+        createWordDisplayLabel();
         createFlipButton();
         createNextButton();
         createBackButton();
@@ -33,7 +35,15 @@ public class CardPanel extends JPanel{
         return wordDisplay;
     }
 
-    private void createJLabel() {
+    private void createTitleLabel() {
+        title = new JLabel("\"" + cardPack.getName() + "\"");
+        title.setFont(new Font("San Serif", PLAIN, 20));
+        title.setForeground(Color.BLACK);
+        title.setOpaque(true);
+        add(title);
+    }
+
+    private void createWordDisplayLabel() {
         wordDisplay = new JLabel("Start Flashcards", SwingConstants.CENTER);
         wordDisplay.setFont(new Font("San Serif", PLAIN, 35));
         wordDisplay.setForeground(Color.white);
@@ -80,16 +90,18 @@ public class CardPanel extends JPanel{
     // MODIFIES: this
     // EFFECTS: Flip the card from front to back or back to front
     private void flip() {
-        if (this.card != null) {
-               if (!this.card.isFlipped) {
-                   wordDisplay.setText(this.card.back);
-                   this.card.isFlipped = true;
-               } else {
-                   wordDisplay.setText(this.card.front);
-                   this.card.isFlipped = false;
-               }
-        } else {
-            next();
+        if (cardPack.cards.size() > 0) {
+            if (card != null) {
+                if (!card.isFlipped) {
+                    wordDisplay.setText(card.back);
+                    card.isFlipped = true;
+                } else {
+                    wordDisplay.setText(card.front);
+                    card.isFlipped = false;
+                }
+            } else {
+                next();
+            }
         }
     }
 
@@ -99,19 +111,21 @@ public class CardPanel extends JPanel{
     // MODIFIES: this
     // EFFECTS: Change wordDisplay from current card.front or null to next card.front
     private void next() {
+        if (cardPack.cards.size() > 0) {
             RandomNumberGenerator rng = new RandomNumberGenerator(cardPack.getSize());
-            this.card = this.cardPack.cards.get(rng.getRand());
-            wordDisplay.setText(this.card.front);
-            this.card.isFlipped = false;
+            card = cardPack.cards.get(rng.getRand());
+            wordDisplay.setText(card.front);
+            card.isFlipped = false;
         }
+    }
 
     // MODIFIES: this, FlashCardApp JFrame
     // EFFECTS: Go back to select Panel
     private void back() {
-        SelectPanel selectPanel = new SelectPanel();
+        SelectCardPackPanel selectCardPackPanel = new SelectCardPackPanel();
         FlashCardApp topFrame = (FlashCardApp) SwingUtilities.windowForComponent(this);
 
-        topFrame.changePanel(selectPanel);
+        topFrame.changePanel(selectCardPackPanel);
     }
 
 }

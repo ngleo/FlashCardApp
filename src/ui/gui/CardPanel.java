@@ -3,6 +3,7 @@ package ui.gui;
 import model.Card;
 import model.CardPack;
 import model.RandomNumberGenerator;
+import ui.FlashCardApp;
 
 import javax.swing.*;
 import java.awt.*;
@@ -20,31 +21,16 @@ public class CardPanel extends JPanel{
     public CardPanel(CardPack cardPack) {
         this.cardPack = cardPack;
         this.card = null;
+
         createJLabel();
         createFlipButton();
         createNextButton();
+        createBackButton();
     }
 
     // getters
-    public CardPack getCardPack() {
-        return cardPack;
-    }
-
-    public Card getCard() {
-        return card;
-    }
-
     public JLabel getWordDisplay() {
         return wordDisplay;
-    }
-
-    // setters
-    public void setCardPack(CardPack cardPack) {
-        this.cardPack = cardPack;
-    }
-
-    public void setCard(Card card) {
-        this.card = card;
     }
 
     private void createJLabel() {
@@ -58,7 +44,7 @@ public class CardPanel extends JPanel{
     }
 
     private void createFlipButton() {
-        JButton flipButton = new JButton("flip");
+        JButton flipButton = new JButton("Flip");
         flipButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -69,7 +55,7 @@ public class CardPanel extends JPanel{
     }
 
     private void createNextButton() {
-        JButton nextButton = new JButton("next");
+        JButton nextButton = new JButton("Next");
         nextButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -77,6 +63,17 @@ public class CardPanel extends JPanel{
             }
         });
         add(nextButton);
+    }
+
+    private void createBackButton() {
+        JButton backButton = new JButton("Back");
+        backButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                back();
+            }
+        });
+        add(backButton);
     }
 
     // REQUIRES: This.card should not be null
@@ -107,4 +104,14 @@ public class CardPanel extends JPanel{
             wordDisplay.setText(this.card.front);
             this.card.isFlipped = false;
         }
+
+    // MODIFIES: this, FlashCardApp JFrame
+    // EFFECTS: Go back to select Panel
+    private void back() {
+        SelectPanel selectPanel = new SelectPanel();
+        FlashCardApp topFrame = (FlashCardApp) SwingUtilities.windowForComponent(this);
+
+        topFrame.changePanel(selectPanel);
+    }
+
 }

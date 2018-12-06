@@ -7,11 +7,13 @@ import ui.FlashCardApp;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 import static java.awt.Font.PLAIN;
 
+/**
+ * The ManageCardPackPanel class creates a Panel for viewing, adding and removing
+ * cards in a cardPack,
+ */
 public class ManageCardPackPanel extends JPanel {
   private JLabel title;
   private JList cardList;
@@ -24,13 +26,10 @@ public class ManageCardPackPanel extends JPanel {
     this.cardPack = cardPack;
 
     setBackground(Color.black);
-
     createTitleLabel();
     createCardsJList();
     createAddCardTextField();
-    createAddCardbutton();
-    createRemoveCardButton();
-    createBackButton();
+    createButtons();
   }
 
   private void createTitleLabel() {
@@ -42,7 +41,7 @@ public class ManageCardPackPanel extends JPanel {
     add(title);
   }
 
-  public void createCardsJList() {
+  private void createCardsJList() {
     Card[] cards = cardPack.getCardsArray();
 
     // Make a mutable model for the JList
@@ -63,7 +62,7 @@ public class ManageCardPackPanel extends JPanel {
     listScroller.setPreferredSize(new Dimension(450, 240));
   }
 
-  public void createAddCardTextField() {
+  private void createAddCardTextField() {
     cardFrontTextField = new JTextField(10);
     add(cardFrontTextField);
     cardBackTextField = new JTextField(10);
@@ -73,51 +72,40 @@ public class ManageCardPackPanel extends JPanel {
     setTextFieldPlaceHolder("Back", cardBackTextField);
   }
 
-  public void createAddCardbutton() {
-    JButton addCardButton = new JButton("Add Card");
-
-    addCardButton.addActionListener(new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent e) {
-        newCard();
-      }
-    });
-    add(addCardButton);
-  }
-
-  private void createRemoveCardButton() {
-    JButton removeCardButton = new JButton("Remove");
-    removeCardButton.addActionListener(new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent e) {
-        removeCard();
-      }
-    });
-    add(removeCardButton);
-  }
-
-  private void createBackButton() {
-    JButton backButton = new JButton("Back");
-    backButton.addActionListener(new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent e) {
-        back();
-      }
-    });
-    add(backButton);
-  }
-
-  public void setTextFieldPlaceHolder(String text, JTextField tf) {
+  private void setTextFieldPlaceHolder(String text, JTextField tf) {
     TextPrompt tp = new TextPrompt(text, tf);
     tp.setForeground(Color.GRAY);
     tp.changeAlpha(0.5f);
     tp.changeStyle(Font.BOLD);
   }
 
+  private void createButtons() {
+    createAddCardButton();
+    createRemoveCardButton();
+    createBackButton();
+  }
+
+  private void createAddCardButton() {
+    JButton addCardButton = new JButton("Add Card");
+
+    addCardButton.addActionListener(e -> newCard());
+    add(addCardButton);
+  }
+
+  private void createRemoveCardButton() {
+    JButton removeCardButton = new JButton("Remove");
+    removeCardButton.addActionListener(e -> removeCard());
+    add(removeCardButton);
+  }
+
+  private void createBackButton() {
+    JButton backButton = new JButton("Back");
+    backButton.addActionListener(e -> back());
+    add(backButton);
+  }
+
   // TODO add exception for empty fields
-  // MODIFIES: this
-  // EFFECTS: Creates new card in cardPack, save it to data file
-  public void newCard() {
+  private void newCard() {
     String cardFront = cardFrontTextField.getText();
     String cardBack = cardBackTextField.getText();
     Card cardToAdd = new Card(cardFront, cardBack);
@@ -133,9 +121,7 @@ public class ManageCardPackPanel extends JPanel {
     cardBackTextField.setText("");
   }
 
-  // MODIFIES: this
-  // EFFECTS: Remove card from cardPack, update data file
-  public void removeCard() {
+  private void removeCard() {
     int index = cardList.getSelectedIndex();
 
     cardPack.removeCardByIndex(index);
@@ -144,8 +130,6 @@ public class ManageCardPackPanel extends JPanel {
     cardPack.saveCardPack("resources/");
   }
 
-  // MODIFIES: this, FlashCardApp JFrame
-  // EFFECTS: Go back to select Panel
   private void back() {
     SelectCardPackPanel selectCardPackPanel = new SelectCardPackPanel();
     FlashCardApp topFrame = (FlashCardApp) SwingUtilities.windowForComponent(this);

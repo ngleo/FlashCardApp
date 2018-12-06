@@ -12,31 +12,35 @@ import java.awt.event.ActionListener;
 
 import static java.awt.Font.PLAIN;
 
+/**
+ * The CardPanel class creates a panel for the user to view cards in the chosen cardPack.
+ */
 public class CardPanel extends JPanel {
-  private JLabel title;
   private CardPack cardPack;
   private Card card;
   private JLabel wordDisplay;
 
-  // constructor
   public CardPanel(CardPack cardPack) {
     this.cardPack = cardPack;
     this.card = null;
 
     createTitleLabel();
     createWordDisplayLabel();
-    createFlipButton();
-    createNextButton();
-    createBackButton();
+    createButtons();
   }
 
-  // getters
+  /**
+   * Method returns the text of the card being displayed.
+   *
+   * @return the current displayed String in the wordDisplay JLabel.
+   */
   public JLabel getWordDisplay() {
     return wordDisplay;
   }
 
   private void createTitleLabel() {
-    title = new JLabel("\"" + cardPack.getName() + "\"");
+    JLabel title = new JLabel("\"" + cardPack.getName() + "\"");
+
     title.setFont(new Font("San Serif", PLAIN, 20));
     title.setForeground(Color.BLACK);
     title.setOpaque(true);
@@ -51,6 +55,12 @@ public class CardPanel extends JPanel {
     wordDisplay.setOpaque(true);
     wordDisplay.setPreferredSize(new Dimension(500, 300));
     add(wordDisplay);
+  }
+
+  private void createButtons() {
+    createFlipButton();
+    createNextButton();
+    createBackButton();
   }
 
   private void createFlipButton() {

@@ -5,6 +5,9 @@ import ui.gui.SelectCardPackPanel;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * The FlashCardApp class starts the application.
+ */
 public class FlashCardApp extends JFrame {
 
   private SelectCardPackPanel selectCardPackPanel;
@@ -23,6 +26,11 @@ public class FlashCardApp extends JFrame {
     setVisible(true);
   }
 
+  /**
+   * Method switches JPanel in the JFrame Gui to the Jpanel in arg.
+   *
+   * @param panel is the Jpanel to be displayed in the gui.
+   */
   public void changePanel(JPanel panel) {
     getContentPane().removeAll();
     invalidate();

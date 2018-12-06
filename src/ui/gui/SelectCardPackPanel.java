@@ -6,32 +6,31 @@ import ui.FlashCardApp;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.File;
 
 import static java.awt.Font.PLAIN;
 
+/**
+ * The SelectCardPackPanel class creates UI for the user to select, manage,
+ * add and remove CardPack.
+ */
 public class SelectCardPackPanel extends JPanel {
-  private JLabel title;
+  private static final String FILE_PATH = "resources/";
+
   private JList cardPackList;
   private DefaultListModel listModel;
   private Inventory inventory;
 
-  // constructor
   public SelectCardPackPanel() {
     setBackground(Color.black);
-
     createTitleLabel();
     createCardPackJList();
-    createSelectCardPackButton();
-    createManageCardPackButton();
-    createAddCardPackButton();
-    createRemoveCardPackButton();
+    createButtons();
   }
 
   private void createTitleLabel() {
-    title = new JLabel("\"Card Sets\"");
+    JLabel title = new JLabel("\"Card Sets\"");
+
     title.setFont(new Font("San Serif", PLAIN, 20));
     title.setForeground(Color.white);
     title.setBackground(Color.black);
@@ -41,7 +40,8 @@ public class SelectCardPackPanel extends JPanel {
 
   private void createCardPackJList() {
     inventory = new Inventory();
-    inventory.readCardPacks("resources/");
+
+    inventory.readCardPacks(FILE_PATH);
     String[] cardPackNames = inventory.getCardPackNames();
     Integer[] cardPackSizes = inventory.getCardPackSize();
 
@@ -53,6 +53,7 @@ public class SelectCardPackPanel extends JPanel {
 
     // Create the JList with the model
     cardPackList = new JList(listModel);
+
     add(cardPackList);
     cardPackList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     cardPackList.setLayoutOrientation(JList.VERTICAL);
@@ -63,51 +64,38 @@ public class SelectCardPackPanel extends JPanel {
     listScroller.setPreferredSize(new Dimension(450, 280));
   }
 
+  private void createButtons() {
+    createSelectCardPackButton();
+    createManageCardPackButton();
+    createAddCardPackButton();
+    createRemoveCardPackButton();
+  }
+
   private void createSelectCardPackButton() {
     JButton selectCardPackButton = new JButton("Start Flash Cards");
 
-    selectCardPackButton.addActionListener(new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent e) {
-        openCardPanel();
-      }
-    });
+    selectCardPackButton.addActionListener(e -> openCardPanel());
     add(selectCardPackButton);
   }
 
   private void createManageCardPackButton() {
     JButton manageCardPackButton = new JButton("Manage Cards");
 
-    manageCardPackButton.addActionListener(new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent e) {
-        openManageCardPackPanel();
-      }
-    });
+    manageCardPackButton.addActionListener(e -> openManageCardPackPanel());
     add(manageCardPackButton);
   }
 
   private void createAddCardPackButton() {
     JButton addCardPackButton = new JButton("Add New Card Pack");
 
-    addCardPackButton.addActionListener(new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent e) {
-        newCardPack();
-      }
-    });
+    addCardPackButton.addActionListener(e -> newCardPack());
     add(addCardPackButton);
   }
 
   private void createRemoveCardPackButton() {
     JButton removeCardPackButton = new JButton("Remove Card Pack");
 
-    removeCardPackButton.addActionListener(new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent e) {
-        removeCardPack();
-      }
-    });
+    removeCardPackButton.addActionListener(e -> removeCardPack());
     add(removeCardPackButton);
   }
 
@@ -119,7 +107,7 @@ public class SelectCardPackPanel extends JPanel {
 
       topFrame.changePanel(cardPanel);
     } catch (NullPointerException ex) {
-
+      // It is fine if it is null, button just has no effect, or alert can be implemented
     }
   }
 
@@ -130,13 +118,11 @@ public class SelectCardPackPanel extends JPanel {
       FlashCardApp topFrame = (FlashCardApp) SwingUtilities.windowForComponent(this);
 
       topFrame.changePanel(mcpPanel);
-    } catch (Exception ex) {
-
+    } catch (NullPointerException | ArrayIndexOutOfBoundsException ex) {
+      // No action has to be taken.
     }
   }
 
-  // MODIFIES: this
-  // EFFECTS: Creates new cardPack in inventory, save it to data file
   private void newCardPack() {
     String cardPackName = JOptionPane.showInputDialog(null, "Card Pack Name");
 
@@ -154,12 +140,9 @@ public class SelectCardPackPanel extends JPanel {
     inventory.addCardPack(newCardPack);
     listModel.addElement(cardPackName);
     cardPackList.setModel(listModel);
-    inventory.saveCardPacks("resources/");
+    inventory.saveCardPacks(FILE_PATH);
   }
 
-  // REQUIRES: file names are unique
-  // MODIFIES: this
-  // EFFECTS: Remove cardPack in inventory,remove data file
   private void removeCardPack() {
     try {
       int index = cardPackList.getSelectedIndex();
@@ -170,7 +153,7 @@ public class SelectCardPackPanel extends JPanel {
       cardPackList.setModel(listModel);
 
       // List data files in data folder, find matching file and delete it
-      File path = new File("resources/");
+      File path = new File(FILE_PATH);
       File[] fileList = path.listFiles();
 
       for (File f : fileList) {
@@ -178,8 +161,8 @@ public class SelectCardPackPanel extends JPanel {
           f.delete();
         }
       }
-    } catch (Exception ex) {
-
+    } catch (NullPointerException ex) {
+        // It is fine if there is an exception.
     }
   }
 }
